@@ -97,17 +97,15 @@ func TestSampler_ToJSON(t *testing.T) {
 	mock := &MockNetStatsProvider{sent: 100, recv: 200}
 	s := NewSampler(mock)
 
-	// We don't need to sample for ToJSON if it just returns current state,
-	// but the requirement says it returns sent, recv, total.
-	// Usually this refers to the last sampled rates.
-
-	s.now = func() time.Time { return time.Now() }
+	// Mock time to be deterministic
+	fixedTime := time.Now()
+	s.now = func() time.Time { return fixedTime }
 	s.Sample() // Init
 
 	// Mock some rates
 	s.prevSent = 0
 	s.prevRecv = 0
-	s.prevTime = time.Now().Add(-time.Second)
+	s.prevTime = fixedTime.Add(-time.Second)
 
 	mock.sent = 1000
 	mock.recv = 2000
