@@ -1,0 +1,16 @@
+{
+  "name": "flowmeter-host",
+  "version": "1.0.0",
+  "description": "NPM wrapper for FlowMeter native host",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "node index.js"
+  },
+  "bin": {
+    "flowmeter-host": "index.js"
+  },
+  "files": [
+    "index.js",
+    "bin/"
+  ]
+}

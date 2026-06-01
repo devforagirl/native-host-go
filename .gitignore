@@ -1,0 +1,9 @@
+# Binaries
+dist/
+npm-wrapper/bin/
+*.exe
+*.bin
+
+# OS files
+.DS_Store
+Thumbs.db
