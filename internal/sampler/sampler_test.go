@@ -15,6 +15,10 @@ func (m *MockNetStatsProvider) GetTotalBytes() (sent, recv uint64) {
 	return m.sent, m.recv
 }
 
+func almostEqual(a, b float64) bool {
+	return (a-b) < 1e-9 && (b-a) < 1e-9
+}
+
 func TestSampler_Sample(t *testing.T) {
 	startTime := time.Now()
 
@@ -50,14 +54,14 @@ func TestSampler_Sample(t *testing.T) {
 			wantSent: 1000,
 			wantRecv: 1000,
 		},
-			{
-				name:     "counter reset protection",
-				initial:  [2]uint64{1000, 1000},
-				after:    [2]uint64{100, 100}, // reset
-				duration: time.Second,
-				wantSent: 0,
-				wantRecv: 0,
-			},
+		{
+			name:     "counter reset protection",
+			initial:  [2]uint64{1000, 1000},
+			after:    [2]uint64{100, 100}, // reset
+			duration: time.Second,
+			wantSent: 0,
+			wantRecv: 0,
+		},
 	}
 
 	for _, tt := range tests {
@@ -79,10 +83,10 @@ func TestSampler_Sample(t *testing.T) {
 
 			res := s.Sample()
 
-			if res.Sent != tt.wantSent {
+			if !almostEqual(res.Sent, tt.wantSent) {
 				t.Errorf("Sample().Sent = %v, want %v", res.Sent, tt.wantSent)
 			}
-			if res.Recv != tt.wantRecv {
+			if !almostEqual(res.Recv, tt.wantRecv) {
 				t.Errorf("Sample().Recv = %v, want %v", res.Recv, tt.wantRecv)
 			}
 		})
@@ -116,13 +120,13 @@ func TestSampler_ToJSON(t *testing.T) {
 		t.Fatalf("Failed to unmarshal JSON: %v", err)
 	}
 
-	if result["sent"] != 1000 {
+	if !almostEqual(result["sent"], 1000) {
 		t.Errorf("JSON sent = %v, want 1000", result["sent"])
 	}
-	if result["recv"] != 2000 {
+	if !almostEqual(result["recv"], 2000) {
 		t.Errorf("JSON recv = %v, want 2000", result["recv"])
 	}
-	if result["total"] != 3000 {
+	if !almostEqual(result["total"], 3000) {
 		t.Errorf("JSON total = %v, want 3000", result["total"])
 	}
 }
