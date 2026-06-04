@@ -6,6 +6,8 @@ import (
 	"os"
 )
 
+const Version = "0.1.2"
+
 func main() {
 	fileInfo, _ := os.Stdin.Stat()
 	isTty := (fileInfo.Mode() & os.ModeCharDevice) != 0
