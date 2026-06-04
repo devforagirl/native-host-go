@@ -27,10 +27,14 @@ func handleService() {
 			continue
 		}
 
-		payload := map[string]string{
-			"type":     "speed_update",
-			"download": formatBytes(speed.Download),
-			"upload":   formatBytes(speed.Upload),
+		payload := map[string]interface{}{
+			"type": "speed_update",
+			"payload": map[string]interface{}{
+				"download":          speed.Download,
+				"upload":            speed.Upload,
+				"downloadFormatted": formatBytes(speed.Download),
+				"uploadFormatted":   formatBytes(speed.Upload),
+			},
 		}
 
 		jsonPayload, err := json.Marshal(payload)
