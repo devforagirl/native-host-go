@@ -49,7 +49,7 @@ func performRegistration() error {
 		Description:    "FlowMeter Native Host",
 		Path:           exePath,
 		Type:           "stdio",
-		AllowedOrigins: []string{"chrome-extension://omhgobopmdmnbcanhbcpfcdaphllgbkk/"},
+		AllowedOrigins: []string{"chrome-extension://pnldcjlmodmddljmckgdjejdagceogik/"},
 	}
 
 	manifestBytes, err := json.MarshalIndent(manifest, "", "  ")
